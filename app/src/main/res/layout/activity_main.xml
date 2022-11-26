@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,16 +9,17 @@
 
     <TextView
         android:id="@+id/text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="254dp"
+        android:layout_height="32dp"
         android:gravity="center_horizontal"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintHorizontal_bias="0.643"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311" />
+        app:layout_constraintVertical_bias="0.284"
+        tools:text="@tools:sample/cities" />
 
     <TextView
         android:id="@+id/hello_view"
@@ -31,10 +31,11 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.075" />
 
     <EditText
         android:id="@+id/edit_text"
@@ -60,7 +61,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.323" />
+        app:layout_constraintVertical_bias="0.336" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -72,7 +73,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672"
+        app:layout_constraintVertical_bias="0.686"
         app:srcCompat="@mipmap/ic_launcher" />
 
     <ImageButton
@@ -85,7 +86,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959"
+        app:layout_constraintVertical_bias="0.974"
         app:srcCompat="@mipmap/ic_reload2_foreground" />
 
     <ImageView
@@ -100,5 +101,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.192"
         app:srcCompat="@mipmap/ic_pen2_foreground" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="169dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="23dp"
+        android:text="Give me a minute."
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/hello_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.stablephone;
 
 import static android.os.Looper.getMainLooper;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 //import com.example.stablephone.databinding.ActivityMainBinding;
+import android.os.StrictMode;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
@@ -31,6 +34,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,12 +42,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private ImageButton retryButton;
     private ImageView imageView;
+    private String jsonString;
+    private String urlString;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         editText = findViewById(R.id.edit_text);
         textView = findViewById(R.id.text_view);
@@ -59,37 +70,45 @@ public class MainActivity extends AppCompatActivity {
 
             // エディットテキストのテキストを取得
             String text = editText.getText().toString();
-            // 取得したテキストを TextView に張り付ける
-            textView.setText(text);
-            apiManager.getJson(text, imageView);
-            // Singleの別スレッドを立ち上げる
-//            Executors.newSingleThreadExecutor().execute(() -> {
-//                try {
-//                    URL url = new URL(text);
-//                    HttpURLConnection urlCon =  (HttpURLConnection) url.openConnection();
-//
-//                    // タイムアウト設定
-//                    urlCon.setReadTimeout(10000);
-//                    urlCon.setConnectTimeout(20000);
-//
-//                    // リクエストメソッド
-//                    urlCon.setRequestMethod("GET");
-//
-//                    // リダイレクトを自動で許可しない設定
-//                    urlCon.setInstanceFollowRedirects(false);
-//
-//                    InputStream is = urlCon.getInputStream();
-//                    Bitmap bmp = BitmapFactory.decodeStream(is);
-//
-//                    // 別スレッド内での処理を管理し実行する
-//                    HandlerCompat.createAsync(getMainLooper()).post(() ->
-//                            // Mainスレッドに渡す
-//                            imageView.setImageBitmap(bmp)
-//                    );
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
+
+            if(!text.equals("")){
+                if(!text.equals("please write your word")){
+                    editText.setEnabled(false);
+                    button.setEnabled(false);
+                    textView.setText("thank you for waiting.");
+
+                    //@post create image by text
+                    HashMap<String, Object> postJsonMap = new HashMap<>();
+
+                    String version = "8abccf52e7cba9f6e82317253f4a3549082e966db5584e92c808ece132037776";
+                    postJsonMap.put("version",version);
+
+                    HashMap<String, Object> postJsonMap2 = new HashMap<>();
+                    postJsonMap2.put("prompt", text);
+
+                    String inputText = String.format("{\"prompt\": %s}", text);
+
+                    postJsonMap.put("input",postJsonMap2);
+                    try {
+                        jsonString = apiManager.postText(postJsonMap);
+                        try{
+                            Thread.sleep(10000); //10000ミリ秒Sleepする
+                        }catch(InterruptedException e){}
+
+                    } catch (IOException e) {e.printStackTrace();}
+
+//                  @get image url by responseJson
+                    try {
+                        urlString = apiManager.getImgUrl(jsonString);
+
+                    } catch (IOException e) {e.printStackTrace();}
+
+                    //@set image Url to imageView
+                    apiManager.setImgUrl(urlString, imageView);
+                }
+            }else{
+                editText.setText("please write your word");
+            }
         });
 
         retryButton.setOnClickListener( v-> {
@@ -99,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
             String text = editText.getText().toString();
             // 取得したテキストを TextView に張り付ける
             textView.setText("");
-            editText.setText("https://replicate.delivery/pbxt/MPaqiul8V9ZiJlzEzElR7UL43kDPxfJe2yEfTGgvLVZ1U3GgA/out-0.png");
+            editText.setText("");
+            button.setEnabled(true);
+            editText.setEnabled(true);
         });
     }
 }

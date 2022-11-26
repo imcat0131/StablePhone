@@ -11,7 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="welcome">Let\'s try Stable Diffusion!</string>
-    <string name="button">And try it!</string>
+    <string name="button">Try It!</string>
     <string name="hint">ex.) cat sleep book universe ......</string>
 
 </resources>
